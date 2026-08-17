@@ -156,7 +156,6 @@ input:focus ~ .input-icon{color:var(--spider-blue)}
             <stop offset="100%" style="stop-color:#7B61FF"/>
           </linearGradient>
         </defs>
-        <!-- Legs -->
         <path class="spider-leg" d="M50,50 L10,15"/>
         <path class="spider-leg" d="M50,50 L15,50"/>
         <path class="spider-leg" d="M50,50 L10,85"/>
@@ -165,11 +164,8 @@ input:focus ~ .input-icon{color:var(--spider-blue)}
         <path class="spider-leg" d="M50,50 L90,85"/>
         <path class="spider-leg" d="M50,50 L30,5"/>
         <path class="spider-leg" d="M50,50 L70,5"/>
-        <!-- Body -->
         <ellipse class="spider-body" cx="50" cy="46" rx="18" ry="22"/>
-        <!-- Head -->
         <ellipse class="spider-body" cx="50" cy="23" rx="12" ry="10"/>
-        <!-- Eyes -->
         <circle cx="44" cy="20" r="3" fill="#fff"/>
         <circle cx="56" cy="20" r="3" fill="#fff"/>
         <circle cx="44.5" cy="19.5" r="1.2" fill="#1a1a2e"/>
@@ -213,14 +209,12 @@ input:focus ~ .input-icon{color:var(--spider-blue)}
   var d=document.documentElement;
   var saved=localStorage.getItem('spider-theme')||'light';
   d.setAttribute('data-theme',saved);
-  // Eye toggle
   var pw=document.getElementById('pw'),eye=document.getElementById('eye-btn'),eyeIcon=eye.querySelector('i');
   eye.onclick=function(){
     var show=pw.type==='password';
     pw.type=show?'text':'password';
     eyeIcon.className='ti '+(show?'ti-eye-off':'ti-eye');
   };
-  // Login form
   document.getElementById('form').addEventListener('submit',async function(e){
     e.preventDefault();
     var btn=document.getElementById('btn'),err=document.getElementById('err'),et=document.getElementById('err-text');
@@ -385,7 +379,7 @@ a{color:inherit;text-decoration:none}
 .stat-sub{font-size:10px;color:var(--text-secondary);margin-top:7px;display:flex;align-items:center;gap:4px}
 .stat-sub.up{color:var(--success)}
 
-/* ============ QUIICK ACTIONS ============ */
+/* ============ QUICK ACTIONS ============ */
 .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .qa-btn{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface-glass);backdrop-filter:blur(12px);color:var(--text-primary);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all var(--transition)}
 .qa-btn:hover{background:var(--gradient);color:#fff;border-color:transparent;box-shadow:0 6px 20px rgba(43,127,255,.25);transform:translateY(-2px)}
@@ -512,6 +506,55 @@ a{color:inherit;text-decoration:none}
 .chart-title i{color:var(--spider-blue)}
 .chart-canvas-wrap{position:relative;height:300px}
 
+/* ============ CUSTOM SUB DROPDOWN ============ */
+.custom-sub-dropdown-wrap{position:relative;margin-top:8px}
+.custom-sub-dropdown{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:10px 14px;cursor:pointer;
+  transition:all .2s;gap:8px;overflow:hidden;position:relative;z-index:2
+}
+.custom-sub-dropdown:hover{border-color:rgba(43,127,255,.25)}
+.custom-sub-dropdown::after{
+  content:'';position:absolute;inset:0;border-radius:var(--radius-lg);
+  background:linear-gradient(135deg,rgba(43,127,255,.05),transparent);opacity:0;transition:opacity .2s
+}
+.custom-sub-dropdown:hover::after{opacity:1}
+#custom-sub-selected-label{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#custom-sub-chevron{font-size:14px;color:var(--text-secondary);transition:transform .2s}
+.custom-sub-dropdown.open #custom-sub-chevron{transform:rotate(180deg)}
+.custom-sub-dropdown-menu{
+  position:absolute;top:100%;left:0;right:0;
+  background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1.5px solid var(--border);border-radius:var(--radius-lg);
+  max-height:220px;overflow-y:auto;overflow-x:hidden;
+  z-index:10;margin-top:6px;box-shadow:var(--shadow-lg);
+  opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s;
+  padding:6px
+}
+.custom-sub-dropdown-wrap.open .custom-sub-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.custom-sub-dropdown-menu::-webkit-scrollbar{width:6px}
+.custom-sub-dropdown-menu::-webkit-scrollbar-track{background:transparent}
+.custom-sub-dropdown-menu::-webkit-scrollbar-thumb{background:rgba(43,127,255,.18);border-radius:3px}
+.custom-sub-dropdown-menu::-webkit-scrollbar-thumb:hover{background:rgba(43,127,255,.28)}
+.custom-sub-option{
+  padding:10px 14px;cursor:pointer;border-radius:var(--radius);margin:4px 6px;
+  font-size:12.5px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:all .2s;display:flex;align-items:center;gap:8px
+}
+.custom-sub-option:hover{background:rgba(43,127,255,.08);color:var(--spider-blue)}
+.custom-sub-option.active{background:rgba(43,127,255,.14);color:var(--spider-blue);border:1px solid rgba(43,127,255,.2);font-weight:600}
+.custom-sub-option .sub-preview{
+  display:inline-block;width:18px;height:18px;border-radius:4px;
+  background:linear-gradient(135deg,var(--spider-blue),var(--spider-purple));
+  flex-shrink:0;box-shadow:0 0 4px rgba(43,127,255,.4)
+}
+
+/* ============ SCANNER STYLES ============ */
+.scanner-nav{display:flex;gap:8px;margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.scanner-tab{padding:8px 18px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;font-weight:700;font-size:12px;transition:all .2s}
+.scanner-tab.active{background:var(--spider-blue);color:#fff;border-color:var(--spider-blue)}
+
 /* ============ RESPONSIVE ============ */
 @media(max-width:1100px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
@@ -631,6 +674,7 @@ a{color:inherit;text-decoration:none}
     <div class="nav-item active" data-page="dash"><i class="ti ti-layout-dashboard"></i> داشبورد</div>
     <div class="nav-item" data-page="users"><i class="ti ti-users"></i> کاربران <span class="nav-badge" id="users-count">0</span></div>
     <div class="nav-item" data-page="configs"><i class="ti ti-link-plus"></i> کانفیگ‌ها <span class="nav-badge" id="configs-count">0</span></div>
+    <div class="nav-item" data-page="scanner"><i class="ti ti-radar"></i> اسکنر IP</div>
     <div class="nav-item" data-page="servers"><i class="ti ti-server-2"></i> سرورها</div>
     <div class="nav-item" data-page="plans"><i class="ti ti-receipt-2"></i> پلن‌ها</div>
     <div class="nav-item" data-page="groups"><i class="ti ti-folders"></i> گروه‌ها</div>
@@ -674,8 +718,8 @@ a{color:inherit;text-decoration:none}
     <div class="quick-actions">
       <button class="qa-btn" onclick="openModal('modal-create-user')"><i class="ti ti-user-plus"></i> افزودن کاربر</button>
       <button class="qa-btn" onclick="switchPage('configs')"><i class="ti ti-link-plus"></i> ساخت کانفیگ</button>
+      <button class="qa-btn" onclick="switchPage('scanner')"><i class="ti ti-radar"></i> اسکنر IP</button>
       <button class="qa-btn" onclick="switchPage('traffic')"><i class="ti ti-chart-bar"></i> گزارش ترافیک</button>
-      <button class="qa-btn"><i class="ti ti-database"></i> بکاپ</button>
     </div>
     <div class="server-panel">
       <div class="server-title"><i class="ti ti-activity"></i> وضعیت سرور</div>
@@ -718,6 +762,39 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="cfg-grid" id="configs-grid"></div>
     <div class="empty-state" id="configs-empty" style="display:none"><i class="ti ti-link-off"></i><p>هنوز کانفیگی وجود ندارد</p></div>
+  </section>
+
+  <!-- IP SCANNER PAGE -->
+  <section class="page" id="page-scanner">
+    <div class="topbar">
+      <div><div class="topbar-title"><i class="ti ti-radar"></i> اسکنر IP مرورگر</div><div class="topbar-sub">تست و پینگ سریع IPهای سالم بدون مصرف پهنای باند سرور</div></div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" id="scanner-start-btn" onclick="startScanner()"><i class="ti ti-player-play"></i> شروع اسکن</button>
+        <button class="btn btn-danger" id="scanner-stop-btn" onclick="stopScanner()" style="display:none"><i class="ti ti-player-stop"></i> توقف</button>
+      </div>
+    </div>
+    <div class="scanner-nav">
+      <button class="scanner-tab active" data-type="cf" onclick="switchScannerTab('cf')">Cloudflare</button>
+      <button class="scanner-tab" data-type="railway" onclick="switchScannerTab('railway')">Railway</button>
+      <button class="scanner-tab" data-type="tcp" onclick="switchScannerTab('tcp')">TCP Custom</button>
+    </div>
+    <div class="server-panel" style="padding:16px 20px;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div style="font-size:13px;font-weight:600"><span id="scanner-tested-count">0</span> تست شده | <span id="scanner-working-count" style="color:var(--success)">0</span> سالم پیدا شد</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm btn-ghost" onclick="saveScannerResults()"><i class="ti ti-device-floppy"></i> ذخیره نتایج</button>
+          <button class="btn btn-sm btn-danger" onclick="clearScannerResults()"><i class="ti ti-trash"></i> پاک کردن</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>آی‌پی</th><th>تاخیر (پینگ)</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+        <tbody id="scanner-results-table">
+          <tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text-secondary)">آماده برای اسکن</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- TRAFFIC PAGE -->
@@ -992,14 +1069,6 @@ a{color:inherit;text-decoration:none}
         </div>
       </div>
     </div>
-    <div class="table-wrap" id="worker-last-sync" style="display:none">
-      <div style="padding:18px 22px;border-bottom:1px solid var(--border)">
-        <div class="server-title" style="margin-bottom:0"><i class="ti ti-clock"></i> آخرین همگام‌سازی</div>
-      </div>
-      <div style="padding:18px 22px">
-        <div id="worker-last-sync-info"></div>
-      </div>
-    </div>
   </section>
 </main>
 
@@ -1058,7 +1127,7 @@ function switchPage(name){
   document.querySelectorAll('.nav-item').forEach(function(el){el.classList.toggle('active',el.dataset.page===name)});
   document.querySelectorAll('.page').forEach(function(el){el.classList.toggle('active',el.id==='page-'+name)});
   toggleSidebar();window.scrollTo({top:0,behavior:'smooth'});
-  var loaders={users:loadUsers,configs:loadConfigs,traffic:loadTraffic,logs:loadLogs,dash:loadDashboard,settings:loadSettings,worker:loadWorker};
+  var loaders={users:loadUsers,configs:loadConfigs,traffic:loadTraffic,logs:loadLogs,dash:loadDashboard,settings:loadSettings,worker:loadWorker,scanner:loadScanner};
   if(loaders[name])loaders[name]();
 }
 document.querySelectorAll('.nav-item').forEach(function(el){el.onclick=function(){switchPage(el.dataset.page)}});
@@ -1080,21 +1149,17 @@ async function loadInbounds(){
     var inbounds=d.inbounds||[];
     var inboundSelect=document.getElementById('cu-inbound');
     var workerCountryWrap=document.getElementById('cu-worker-country-wrap');
-    var workerCountrySelect=document.getElementById('cu-worker-country');
     if(!inboundSelect)return;
 
-    // Populate inbounds dropdown
     inboundSelect.innerHTML = '<option value="">انتخاب اینباند...</option>' +
       inbounds.map(function(ib){
         return '<option value="'+esc(ib.inbound_id)+'">'+esc(ib.name)+' ('+esc(ib.protocol)+' '+esc(ib.network)+')</option>';
       }).join('');
 
-    // Handle inbound change
     inboundSelect.onchange = function(){
       var selectedId = this.value;
       var selectedInbound = inbounds.find(function(ib){ return ib.inbound_id === selectedId; });
       if(selectedInbound && selectedInbound.protocol === 'worker'){
-        // Fetch worker inbounds with countries
         loadWorkerCountries(selectedId);
         workerCountryWrap.style.display = 'block';
       }else{
@@ -1127,7 +1192,6 @@ async function loadWorkerCountries(inboundId){
 
 /* ============ CREATE USER ============ */
 async function createUser(){
-  var form=document.getElementById('create-user-form');
   var traffic=document.getElementById('cu-traffic').value;
   var unit=document.getElementById('cu-traffic-unit').value;
   var active=document.getElementById('cu-active-toggle').classList.contains('on');
@@ -1147,7 +1211,6 @@ async function createUser(){
     inbound_id: inboundId,
     inbound_ids: inboundIds,
   };
-  // If worker inbound is selected, add proxy_countries
   var workerCountryWrap = document.getElementById('cu-worker-country-wrap');
   if(workerCountryWrap && workerCountryWrap.style.display !== 'none'){
     var proxyCountry = document.getElementById('cu-worker-country').value;
@@ -1280,6 +1343,173 @@ function showQRForLink(uuid){
   openModal('modal-config');
 }
 
+/* ============ IP SCANNER MODULE ============ */
+var scannerRunning = false;
+var scannerType = 'cf';
+var scannerResults = [];
+var testedCounter = 0;
+var workingCounter = 0;
+
+var CF_RANGES = [
+  "173.245.48.0/20", "103.21.244.0/22", "103.22.200.0/22", "103.31.4.0/22",
+  "141.101.64.0/18", "108.162.192.0/18", "190.93.240.0/20", "188.114.96.0/20",
+  "197.234.240.0/22", "198.41.128.0/17", "162.158.0.0/15", "104.16.0.0/13",
+  "104.24.0.0/14", "172.64.0.0/13", "131.0.72.0/22"
+];
+
+function getRandomSubnetIP(cidr) {
+  var parts = cidr.split('/');
+  var base = parts[0].split('.').map(Number);
+  var mask = parseInt(parts[1], 10);
+  var hostBits = 32 - mask;
+  var maxHosts = Math.pow(2, hostBits) - 2;
+  var randomOffset = Math.floor(Math.random() * maxHosts) + 1;
+  var ipInt = (base[0] << 24) | (base[1] << 16) | (base[2] << 8) | base[3];
+  ipInt += randomOffset;
+  return [(ipInt >>> 24) & 255, (ipInt >>> 16) & 255, (ipInt >>> 8) & 255, ipInt & 255].join('.');
+}
+
+async function pingCandidateIP(ip, timeoutMs) {
+  timeoutMs = timeoutMs || 2500;
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function(){ controller.abort(); }, timeoutMs);
+  var startTime = performance.now();
+
+  try {
+    await fetch("https://" + ip + ":443/?__t=" + Date.now(), {
+      method: "HEAD",
+      mode: "no-cors",
+      cache: "no-store",
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    var latency = Math.round(performance.now() - startTime);
+    return { ip: ip, latency: latency, status: "alive" };
+  } catch (error) {
+    clearTimeout(timeoutId);
+    return { ip: ip, latency: null, status: "unreachable" };
+  }
+}
+
+function switchScannerTab(type) {
+  if (scannerRunning) stopScanner();
+  scannerType = type;
+  document.querySelectorAll('.scanner-tab').forEach(function(t){
+    t.classList.toggle('active', t.dataset.type === type);
+  });
+  loadScanner();
+}
+
+async function loadScanner() {
+  try {
+    var r = await authFetch('/api/scanner/ips/' + scannerType);
+    var d = await r.json();
+    scannerResults = d.ips || [];
+    renderScannerTable();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function renderScannerTable() {
+  var tbody = document.getElementById('scanner-results-table');
+  if (!scannerResults.length) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text-secondary)">لیست خالی است</td></tr>';
+    return;
+  }
+  tbody.innerHTML = scannerResults.map(function(item) {
+    var isAlive = item.latency !== null;
+    var pingClass = item.latency < 200 ? 'exp-ok' : item.latency < 500 ? 'exp-warn' : 'exp-bad';
+    return '<tr>' +
+      '<td style="font-family:monospace;font-weight:600">' + esc(item.ip) + '</td>' +
+      '<td>' + (isAlive ? '<span class="exp-chip ' + pingClass + '">' + item.latency + ' ms</span>' : '—') + '</td>' +
+      '<td><span class="status-dot ' + (isAlive ? 'active' : 'expired') + '"><span class="dot ' + (isAlive ? 'dot-green' : 'dot-red') + '"></span>' + (isAlive ? 'متصل' : 'ناموفق') + '</span></td>' +
+      '<td><button class="btn btn-sm btn-ghost" onclick="copyTextDirect(\'' + esc(item.ip) + '\')"><i class="ti ti-copy"></i> کپی</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function copyTextDirect(txt) {
+  navigator.clipboard.writeText(txt).then(function(){ toast('IP کپی شد ✓', 'ok'); });
+}
+
+async function startScanner() {
+  scannerRunning = true;
+  document.getElementById('scanner-start-btn').style.display = 'none';
+  document.getElementById('scanner-stop-btn').style.display = 'inline-flex';
+  testedCounter = 0;
+  workingCounter = 0;
+
+  var batchSize = 8;
+  while (scannerRunning) {
+    var candidateBatch = [];
+    for (var i = 0; i < batchSize; i++) {
+      var cidr = CF_RANGES[Math.floor(Math.random() * CF_RANGES.length)];
+      candidateBatch.push(getRandomSubnetIP(cidr));
+    }
+
+    var promises = candidateBatch.map(function(ip){ return pingCandidateIP(ip); });
+    var batchResults = await Promise.all(promises);
+
+    batchResults.forEach(function(res) {
+      testedCounter++;
+      if (res.status === 'alive') {
+        workingCounter++;
+        scannerResults.unshift(res);
+        if (scannerResults.length > 50) scannerResults.pop();
+      }
+    });
+
+    document.getElementById('scanner-tested-count').textContent = testedCounter;
+    document.getElementById('scanner-working-count').textContent = workingCounter;
+    renderScannerTable();
+    await new Promise(function(resolve){ setTimeout(resolve, 300); });
+  }
+}
+
+function stopScanner() {
+  scannerRunning = false;
+  document.getElementById('scanner-start-btn').style.display = 'inline-flex';
+  document.getElementById('scanner-stop-btn').style.display = 'none';
+  toast('اسکنر متوقف شد', 'warn');
+}
+
+async function saveScannerResults() {
+  try {
+    var validIPs = scannerResults.filter(function(r){ return r.status === 'alive'; });
+    var r = await authFetch('/api/scanner/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: scannerType, ips: validIPs })
+    });
+    if (!r.ok) throw new Error();
+    toast('نتایج اسکنر ذخیره شد ✓', 'ok');
+  } catch (e) {
+    toast('خطا در ذخیره نتایج', 'err');
+  }
+}
+
+async function clearScannerResults() {
+  if (!confirm('آیا از پاک‌سازی کامل لیست نتایج اطمینان دارید؟')) return;
+  stopScanner();
+  scannerResults = [];
+  testedCounter = 0;
+  workingCounter = 0;
+  document.getElementById('scanner-tested-count').textContent = '0';
+  document.getElementById('scanner-working-count').textContent = '0';
+  renderScannerTable();
+  try {
+    await authFetch('/api/scanner/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: scannerType, ips: [] })
+    });
+    toast('لیست با موفقیت پاک شد ✓', 'ok');
+  } catch (e) {
+    toast('خطا در پاک‌سازی سرور', 'err');
+  }
+}
+
 /* ============ TRAFFIC ============ */
 var trafficChart=null;
 async function loadTraffic(){
@@ -1408,7 +1638,6 @@ async function loadCustomSubs(selected){
 }
 function toggleCustomSubMenu(){
   var wrap=document.getElementById('custom-sub-dropdown-wrap');
-  var dd=document.getElementById('custom-sub-dropdown');
   if(wrap.classList.contains('open')){wrap.classList.remove('open')}else{wrap.classList.add('open')}
 }
 function selectCustomSub(file,label){
@@ -1480,7 +1709,6 @@ async function loadWorker(){
     var connectForm=document.getElementById('worker-connect-form');
     var connectedInfo=document.getElementById('worker-connected-info');
     var proxiesSection=document.getElementById('worker-proxies-section');
-    var lastSync=document.getElementById('worker-last-sync');
     var syncBtn=document.getElementById('worker-sync-btn');
     var disconnectBtn=document.getElementById('worker-disconnect-btn');
 
@@ -1488,7 +1716,6 @@ async function loadWorker(){
       connectForm.style.display = 'none';
       connectedInfo.style.display = 'block';
       proxiesSection.style.display = 'block';
-      lastSync.style.display = 'block';
       if(syncBtn)syncBtn.style.display = 'inline-flex';
       if(disconnectBtn)disconnectBtn.style.display = 'inline-flex';
 
@@ -1499,24 +1726,11 @@ async function loadWorker(){
       document.getElementById('worker-source-url').value = d.source_url || 'https://raw.githubusercontent.com/NiREvil/vless/main/sub/ProxyIP-Daily.md';
       document.getElementById('worker-auto-sync').classList.toggle('on', d.auto_sync);
 
-      // Render proxies table
       renderWorkerProxies(d.proxies || []);
-
-      // Last sync info
-      if(d.last_sync){
-        var ls=document.getElementById('worker-last-sync-info');
-        var syncTime = new Date(d.last_sync).toLocaleString('fa-IR');
-        var syncCount = d.sync_count || 0;
-        var syncError = d.sync_error || '';
-        ls.innerHTML = '<div style="font-size:13px;color:var(--text-secondary)">زمان: '+syncTime+'</div>' +
-          '<div style="font-size:13px;color:var(--text-secondary);margin-top:4px">تعداد همگام‌سازی‌ها: '+syncCount+'</div>' +
-          (syncError ? '<div style="font-size:13px;color:var(--spider-red);margin-top:4px">خطا: '+esc(syncError)+'</div>' : '');
-      }
     }else{
       connectForm.style.display = 'block';
       connectedInfo.style.display = 'none';
       proxiesSection.style.display = 'none';
-      lastSync.style.display = 'none';
       if(syncBtn)syncBtn.style.display = 'none';
       if(disconnectBtn)disconnectBtn.style.display = 'none';
     }
@@ -1755,49 +1969,6 @@ html,body{{min-height:100%;background:var(--bg);font-family:'Vazirmatn',sans-ser
   .wrap{{padding:20px 12px 50px}}
 }}
 @keyframes spin{{to{{transform:rotate(360deg)}}}}
-/* Custom Sub Dropdown */
-.custom-sub-dropdown-wrap{{position:relative;margin-top:8px}}
-.custom-sub-dropdown{{
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--surface);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:10px 14px;cursor:pointer;
-  transition:all .2s;gap:8px;overflow:hidden;position:relative;z-index:2
-}}
-.custom-sub-dropdown:hover{{border-color:rgba(43,127,255,.25)}}
-.custom-sub-dropdown::after{{
-  content:'';position:absolute;inset:0;border-radius:var(--radius-lg);
-  background:linear-gradient(135deg,rgba(43,127,255,.05),transparent);opacity:0;transition:opacity .2s
-}}
-.custom-sub-dropdown:hover::after{{opacity:1}}
-#custom-sub-selected-label{{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
-#custom-sub-chevron{{font-size:14px;color:var(--text-secondary);transition:transform .2s}}
-.custom-sub-dropdown.open #custom-sub-chevron{{transform:rotate(180deg)}}
-.custom-sub-dropdown-menu{{
-  position:absolute;top:100%;left:0;right:0;
-  background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1.5px solid var(--border);border-radius:var(--radius-lg);
-  max-height:220px;overflow-y:auto;overflow-x:hidden;
-  z-index:10;margin-top:6px;box-shadow:var(--shadow-lg);
-  opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s;
-  padding:6px
-}}
-.custom-sub-dropdown-wrap.open .custom-sub-dropdown-menu{{opacity:1;visibility:visible;transform:translateY(0)}}
-.custom-sub-dropdown-menu::-webkit-scrollbar{{width:6px}}
-.custom-sub-dropdown-menu::-webkit-scrollbar-track{{background:transparent}}
-.custom-sub-dropdown-menu::-webkit-scrollbar-thumb{{background:rgba(43,127,255,.18);border-radius:3px}}
-.custom-sub-dropdown-menu::-webkit-scrollbar-thumb:hover{{background:rgba(43,127,255,.28)}}
-.custom-sub-option{{
-  padding:10px 14px;cursor:pointer;border-radius:var(--radius);margin:4px 6px;
-  font-size:12.5px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  transition:all .2s;display:flex;align-items:center;gap:8px
-}}
-.custom-sub-option:hover{{background:rgba(43,127,255,.08);color:var(--spider-blue)}}
-.custom-sub-option.active{{background:rgba(43,127,255,.14);color:var(--spider-blue);border:1px solid rgba(43,127,255,.2);font-weight:600}}
-.custom-sub-option .sub-preview{{
-  display:inline-block;width:18px;height:18px;border-radius:4px;
-  background:linear-gradient(135deg,var(--spider-blue),var(--spider-purple));
-  flex-shrink:0;box-shadow:0 0 4px rgba(43,127,255,.4)
-}}
 </style>
 </head>
 <body data-theme="light">
