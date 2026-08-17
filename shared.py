@@ -1,38 +1,35 @@
-# state.py — Shared mutable state (breaks circular import between main.py and relay_vless.py)
+import os
+import json
 import asyncio
-import threading
-import collections
+import tempfile
 
-# ── VLESS Relay State ──
-RELAY_BUF = 256 * 1024   # 256 KB buffer
-connections: dict = {}
-sub_clients: dict = {}
-TIMEOUT = 30
+_STATE_LOCK = asyncio.Lock()
 
-# ── Core State ──
-stats = {
-    "total_bytes": 0,
-    "total_requests": 0,
-    "total_errors": 0,
-    "start_time": 0,
-}
+async def safe_save_state(file_path: str, data: dict) -> bool:
+    async with _STATE_LOCK:
+        dir_name = os.path.dirname(file_path)
+        os.makedirs(dir_name, exist_ok=True)
+        
+        # Write to temporary file first
+        try:
+            with tempfile.NamedTemporaryFile("w", dir=dir_name, delete=False, encoding="utf-8") as tf:
+                json.dump(data, tf, indent=2, ensure_ascii=False)
+                temp_name = tf.name
+            
+            # Atomic replace
+            os.replace(temp_name, file_path)
+            return True
+        except Exception as e:
+            if 'temp_name' in locals() and os.path.exists(temp_name):
+                os.remove(temp_name)
+            raise e
 
-hourly_traffic = collections.defaultdict(int)
-error_logs = collections.deque(maxlen=100)
-LINKS: dict = {}
-LINKS_LOCK = asyncio.Lock()
-
-# ── Other shared locks/state ──
-USERS_LOCK = asyncio.Lock()
-SUBS_LOCK = asyncio.Lock()
-SETTINGS_LOCK = asyncio.Lock()
-SESSIONS_LOCK = asyncio.Lock()
-GROUPS_LOCK = asyncio.Lock()
-INBOUNDS: dict = {}  # inbound_id -> {name, protocol, port, network, security, domain, sni, external_port, fingerprint, reality_settings, xhttp_settings, created_at}
-INBOUNDS_LOCK = asyncio.Lock()
-
-# ── Path to UUID index (maps random paths like /abc123 to user/link UUIDs) ──
-PATH_INDEX: dict = {}  # stripped_path -> {"uuid": str, "type": "user"|"link"}
-PATH_INDEX_LOCK = asyncio.Lock()
-
-IP_LOCK = threading.Lock()
+async def safe_load_state(file_path: str, default_data: dict = None) -> dict:
+    async with _STATE_LOCK:
+        if not os.path.exists(file_path):
+            return default_data if default_data is not None else {}
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return default_data if default_data is not None else {}
